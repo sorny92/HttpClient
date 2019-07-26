@@ -26,8 +26,8 @@ class HttpClient {
 public:
     HttpClient(const std::string &host, const std::string &port);
 
-    void request(const std::string &target,
-                 const std::map<std::string, std::string> &values);
+    http::response<http::dynamic_body> request(const std::string &target,
+                                               const std::map<std::string, std::string> &values);
 
 private:
     const std::string host;

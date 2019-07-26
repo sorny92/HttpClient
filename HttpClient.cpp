@@ -42,7 +42,7 @@ HttpClient::HttpClient(const std::string &host, const std::string &port) : host(
     stream->handshake(ssl::stream_base::client);
 }
 
-void HttpClient::request(const std::string &target, const std::map<std::string, std::string> &values) {
+http::response<http::dynamic_body> HttpClient::request(const std::string &target, const std::map<std::string, std::string> &values) {
 
     std::stringstream ss;
     for (const auto &row: values) {
@@ -72,11 +72,12 @@ void HttpClient::request(const std::string &target, const std::map<std::string, 
     http::read(*stream, buffer, res);
 
     // Write the message to standard out
-    std::cout << res << std::endl;
+//    std::cout << res << std::endl;
 
     // Gracefully close the stream
+    // TODO: This part does cabum when it is uncommented. Commented everything seems to work but this should be checked out
     beast::error_code ec;
-    stream->shutdown(ec);
+//    stream->shutdown(ec);
     if (ec == net::error::eof) {
         // Rationale:
         // http://stackoverflow.com/questions/25587403/boost-asio-ssl-async-shutdown-always-finishes-with-an-error
@@ -85,4 +86,5 @@ void HttpClient::request(const std::string &target, const std::map<std::string, 
     if (ec) {
         throw beast::system_error{ec};
     }
+    return res;
 }
