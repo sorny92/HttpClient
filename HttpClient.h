@@ -24,13 +24,14 @@ using tcp = net::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 
 class HttpClient {
 public:
-    HttpClient(const std::string &host, const std::string &port);
+    HttpClient(const std::string &host, int port);
 
     http::response<http::dynamic_body> request(const std::string &target,
                                                const std::map<std::string, std::string> &values);
 
 private:
     const std::string host;
+    const std::string port;
 
     // It's a unique_ptr because the tcp_stream doesn't have a default initializer
     // so this solves the problem.

@@ -14,7 +14,11 @@ namespace ssl = net::ssl;       // from <boost/asio/ssl.hpp>
 using tcp = net::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 
 
-HttpClient::HttpClient(const std::string &host, const std::string &port) : host(host) {
+HttpClient::HttpClient(const std::string &host, int port) : host(host), port(std::to_string(port)) {
+}
+
+http::response<http::dynamic_body>
+HttpClient::request(const std::string &target, const std::map<std::string, std::string> &values) {
     // The SSL context is required, and holds certificates
     boost::beast::net::ssl::context ctx(boost::asio::ssl::context::tlsv12_client);
 
@@ -40,9 +44,6 @@ HttpClient::HttpClient(const std::string &host, const std::string &port) : host(
 
     // Perform the SSL handshake
     stream->handshake(ssl::stream_base::client);
-}
-
-http::response<http::dynamic_body> HttpClient::request(const std::string &target, const std::map<std::string, std::string> &values) {
 
     std::stringstream ss;
     for (const auto &row: values) {
@@ -71,20 +72,20 @@ http::response<http::dynamic_body> HttpClient::request(const std::string &target
     // Receive the HTTP response
     http::read(*stream, buffer, res);
 
-    // Write the message to standard out
-//    std::cout << res << std::endl;
-
     // Gracefully close the stream
-    // TODO: This part does cabum when it is uncommented. Commented everything seems to work but this should be checked out
     beast::error_code ec;
-//    stream->shutdown(ec);
+    // TODO: This part does cabum so when there's an error it's send to the server because well... Shit happen but it should'nt happen
+    stream->shutdown(ec);
     if (ec == net::error::eof) {
         // Rationale:
         // http://stackoverflow.com/questions/25587403/boost-asio-ssl-async-shutdown-always-finishes-with-an-error
         ec = {};
     }
     if (ec) {
-        throw beast::system_error{ec};
+        std::cerr << ec << std::endl;
+//        throw beast::system_error{ec};
     }
+
     return res;
+
 }
