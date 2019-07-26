@@ -8,7 +8,7 @@ int main(int argc, char **argv) {
     std::cout << "Hello, World!" << std::endl;
     try {
         auto const host = "reqres.in";
-        auto const port = "443";
+        auto const port = 443;
         auto const target = "/api/users";
 
         HttpClient client(host, port);
