@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.10)
 project(HttpClient_beast)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -14,7 +14,7 @@ target_link_libraries(HttpClient
         OpenSSL::SSL
         OpenSSL::Crypto)
 
-add_executable(test main_beast)
-target_include_directories(test PRIVATE
+add_executable(test_httpclient main_beast)
+target_include_directories(test_httpclient PRIVATE
         /opt/data/libraries/boost_1_70_0/)
-target_link_libraries(test HttpClient)
+target_link_libraries(test_httpclient HttpClient)
