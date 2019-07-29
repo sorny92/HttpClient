@@ -12,7 +12,7 @@ if (NOT EXISTS ${CMAKE_BINARY_DIR}/boost_1_70_0)
             https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.zip
             ${CMAKE_BINARY_DIR}/boost_1_70_0.zip
             SHOW_PROGRESS)
-    execute_process(COMMAND ${CMAKE_COMMAND} -E tar "xvf" ${CMAKE_BINARY_DIR}/boost_1_70_0.zip)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E tar "xf" ${CMAKE_BINARY_DIR}/boost_1_70_0.zip)
     execute_process(COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/boost_1_70_0.zip)
 endif ()
 
